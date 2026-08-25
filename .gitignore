@@ -1,0 +1,59 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Virtual machines and disk images
+*.vdi
+*.vmdk
+*.vhd
+*.vhdx
+*.ova
+*.qcow2
+*.iso
+Snapshots/
+
+# Local AI models and runtime data
+models/
+.ollama/
+*.gguf
+*.safetensors
+
+# Wazuh and lab runtime data
+wazuh-data/
+opensearch-data/
+indexer-data/
+logs/
+*.log
+
+# Python and development caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Microsoft Office temporary files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# Local source and administrative documents
+*.docx
+*.xlsx
+*.pdf
+mail.txt
+Ke_hoach_2_nguoi_8_tuan.md
+Mo_ta_chi_tiet_nhiem_vu_2_nguoi.md
+kien_truc_he_thong_do_an.md
