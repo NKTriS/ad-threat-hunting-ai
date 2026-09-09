@@ -27,6 +27,9 @@ opensearch-data/
 indexer-data/
 logs/
 *.log
+data/rag_index/
+data/incidents.json
+data/reports.json
 
 # Python and development caches
 __pycache__/

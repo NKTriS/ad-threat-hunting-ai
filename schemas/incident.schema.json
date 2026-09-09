@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Correlated Wazuh Incident",
+  "type": "object",
+  "required": ["incident_id", "technique", "mitre_id", "severity", "confidence", "start_time", "end_time", "entities", "evidence", "correlation_reason", "source"],
+  "properties": {
+    "incident_id": { "type": "string" },
+    "technique": { "type": "string" },
+    "mitre_id": { "type": "string" },
+    "severity": { "enum": ["low", "medium", "high", "critical"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "start_time": { "type": "string", "format": "date-time" },
+    "end_time": { "type": "string", "format": "date-time" },
+    "entities": { "type": "object" },
+    "evidence": { "type": "array", "minItems": 1 },
+    "correlation_reason": { "type": "string" },
+    "source": { "const": "wazuh" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,12 @@
+[project]
+name = "ad-threat-rag"
+version = "0.1.0"
+description = "Wazuh incident correlation and local RAG analysis for an AD lab"
+requires-python = ">=3.10"
+
+[project.scripts]
+ad-threat-rag = "ai.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

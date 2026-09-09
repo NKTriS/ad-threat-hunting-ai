@@ -1,0 +1,92 @@
+[
+  {
+    "document_id": "mitre-t1110-003",
+    "title": "Password Spraying (T1110.003)",
+    "source": "MITRE ATT&CK",
+    "source_url": "https://attack.mitre.org/techniques/T1110/003/",
+    "metadata": {
+      "technique_id": "T1110.003",
+      "event_ids": ["4625"],
+      "source_type": "technique"
+    },
+    "content": "Password Spraying is a Credential Access sub-technique in which an adversary tries one password or a small set of common passwords against many accounts. This differs from password guessing against one account and is often throttled to avoid account lockout and alert thresholds. Useful evidence includes repeated authentication failures from the same source against multiple distinct accounts within a bounded time window. Windows Event ID 4625 may provide the target account, source address, logon type, status and substatus. Analysts should also search for a successful logon following the failures. Recommended mitigations include multi-factor authentication, suitable account lockout and password policies, conditional access where applicable, and investigation of affected accounts and source addresses."
+  },
+  {
+    "document_id": "mitre-t1558-003",
+    "title": "Kerberoasting (T1558.003)",
+    "source": "MITRE ATT&CK",
+    "source_url": "https://attack.mitre.org/techniques/T1558/003/",
+    "metadata": {
+      "technique_id": "T1558.003",
+      "event_ids": ["4769"],
+      "source_type": "technique"
+    },
+    "content": "Kerberoasting is a Credential Access sub-technique. An adversary with a valid Kerberos ticket-granting ticket can request service tickets for service principal names and attempt to crack material protected by the service account password offline. Detection should examine anomalous Kerberos TGS requests, Windows Event ID 4769, RC4 ticket encryption such as 0x17 or etype 23, an unusual number of service tickets in a short interval, and service accounts outside normal baselines. RC4 alone is an indicator rather than proof and must be correlated with account, service, host and timing context. Mitigations include preferring AES, using long unique service-account passwords or group managed service accounts, rotating exposed credentials, and limiting service-account privileges."
+  },
+  {
+    "document_id": "mitre-t1087-002",
+    "title": "Domain Account Discovery (T1087.002)",
+    "source": "MITRE ATT&CK",
+    "source_url": "https://attack.mitre.org/techniques/T1087/002/",
+    "metadata": {
+      "technique_id": "T1087.002",
+      "event_ids": ["4688", "1"],
+      "source_type": "technique"
+    },
+    "content": "Domain Account Discovery is a Discovery sub-technique used to enumerate domain accounts, groups and related identity information. Observable commands may include net user /domain, net group /domain, dsquery user, Get-ADUser and Get-ADGroup. Evidence can come from Windows process creation Event ID 4688 or Sysmon Event ID 1 when command-line logging is enabled. These commands also have legitimate administrative uses, so analysts should consider the initiating user, parent process, host role, execution time, frequency and surrounding activity before assigning high confidence. Response actions include validating the operator, reviewing subsequent credential access or lateral movement, and preserving the process tree and command line."
+  },
+  {
+    "document_id": "microsoft-event-4625",
+    "title": "Windows Security Event 4625",
+    "source": "Microsoft Learn",
+    "source_url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4625",
+    "metadata": {
+      "event_ids": ["4625"],
+      "source_type": "event_reference"
+    },
+    "content": "Windows Security Event ID 4625 records a failed account logon. Investigation fields include TargetUserName, TargetDomainName, LogonType, Status, SubStatus, WorkstationName, IpAddress, ProcessName and AuthenticationPackageName. A single 4625 is not sufficient to classify password spraying. Correlate failures by source address and time, count distinct target accounts, identify any later successful Event ID 4624, and exclude expected service or configuration failures."
+  },
+  {
+    "document_id": "microsoft-event-4769",
+    "title": "Windows Security Event 4769",
+    "source": "Microsoft Learn",
+    "source_url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4769",
+    "metadata": {
+      "event_ids": ["4769"],
+      "source_type": "event_reference"
+    },
+    "content": "Windows Security Event ID 4769 records a Kerberos service ticket request. Relevant investigation fields include the requesting account, service name, service ID, client address, ticket options, ticket encryption type and failure code. For Kerberoasting analysis, correlate service-ticket volume, requested SPNs, the requesting user, source host and encryption type. RC4 value 0x17 or decimal etype 23 may raise suspicion, but environment baselines and legitimate legacy services must be considered to reduce false positives."
+  },
+  {
+    "document_id": "microsoft-process-auditing",
+    "title": "Windows Process Creation Auditing",
+    "source": "Microsoft Learn",
+    "source_url": "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/component-updates/command-line-process-auditing",
+    "metadata": {
+      "event_ids": ["4688"],
+      "source_type": "event_reference"
+    },
+    "content": "Windows Event ID 4688 records process creation when Audit Process Creation is enabled. To include command-line arguments, administrators must also enable the policy Include command line in process creation events. Command lines can reveal domain discovery commands and their arguments but may contain sensitive data. Analysts should preserve the new process, creator process, account, integrity information and command line, then correlate them with Sysmon process identifiers and nearby events."
+  },
+  {
+    "document_id": "microsoft-password-spray-playbook",
+    "title": "Password Spray Investigation Playbook",
+    "source": "Microsoft Learn",
+    "source_url": "https://learn.microsoft.com/en-us/security/operations/incident-response-playbook-password-spray",
+    "metadata": {
+      "technique_id": "T1110.003",
+      "source_type": "response_playbook"
+    },
+    "content": "A password spray investigation should establish the attack timeline and source addresses, confirm the impacted identities, review failed and successful sign-ins, and look for unusual activity after a possible compromise. Immediate actions can include changing or disabling compromised accounts, blocking malicious source addresses with care, enabling multi-factor authentication, restricting legacy authentication, and reviewing affected data and persistence. Conclusions should distinguish a true positive from normal authentication errors and retain the evidence supporting that classification."
+  },
+  {
+    "document_id": "nist-sp800-61r3",
+    "title": "Incident Response Recommendations",
+    "source": "NIST SP 800-61 Rev. 3",
+    "source_url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf",
+    "metadata": {
+      "source_type": "response_guidance"
+    },
+    "content": "Incident response should support preparation, detection, response and recovery as part of cybersecurity risk management. Reports should preserve evidence, explain the basis and uncertainty of conclusions, identify affected assets and identities, recommend proportionate containment and recovery actions, and capture lessons learned. Automated analysis should support rather than replace analyst validation, especially when evidence is incomplete or ambiguous."
+  }
+]
