@@ -12,6 +12,7 @@ from .index import Embedder
 @dataclass(frozen=True, slots=True)
 class RetrievedChunk:
     chunk_id: str
+    document_id: str
     title: str
     source: str
     source_url: str
@@ -22,6 +23,7 @@ class RetrievedChunk:
     def to_dict(self) -> dict[str, Any]:
         return {
             "chunk_id": self.chunk_id,
+            "document_id": self.document_id,
             "title": self.title,
             "source": self.source,
             "source_url": self.source_url,
@@ -75,6 +77,7 @@ class LocalRetriever:
         return [
             RetrievedChunk(
                 chunk_id=str(chunk["chunk_id"]),
+                document_id=str(chunk["document_id"]),
                 title=str(chunk["title"]),
                 source=str(chunk["source"]),
                 source_url=str(chunk["source_url"]),

@@ -1,0 +1,36 @@
+[
+  {
+    "incident_id": "INC-613AEC5344",
+    "scenario": "password_spraying_sample",
+    "technique": "Password Spraying",
+    "mitre_id": "T1110.003",
+    "classification": "true_positive",
+    "expected_document_ids": [
+      "mitre-t1110-003",
+      "microsoft-event-4625",
+      "microsoft-password-spray-playbook"
+    ]
+  },
+  {
+    "incident_id": "INC-17720E55B3",
+    "scenario": "kerberoasting_sample",
+    "technique": "Kerberoasting",
+    "mitre_id": "T1558.003",
+    "classification": "true_positive",
+    "expected_document_ids": [
+      "mitre-t1558-003",
+      "microsoft-event-4769"
+    ]
+  },
+  {
+    "incident_id": "INC-0DF8135ED4",
+    "scenario": "domain_account_discovery_sample",
+    "technique": "Domain Account Discovery",
+    "mitre_id": "T1087.002",
+    "classification": "true_positive",
+    "expected_document_ids": [
+      "mitre-t1087-002",
+      "microsoft-process-auditing"
+    ]
+  }
+]

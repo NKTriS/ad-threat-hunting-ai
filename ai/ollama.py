@@ -3,11 +3,22 @@ from __future__ import annotations
 import json
 import urllib.error
 import urllib.request
+from pathlib import Path
 from typing import Any
 
 
 class OllamaError(RuntimeError):
     pass
+
+
+ANALYSIS_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "analysis.schema.json"
+
+
+def _analysis_schema() -> dict[str, Any]:
+    payload = json.loads(ANALYSIS_SCHEMA_PATH.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise OllamaError("Analysis schema must be a JSON object")
+    return payload
 
 
 class OllamaClient:
@@ -16,14 +27,16 @@ class OllamaClient:
         base_url: str = "http://127.0.0.1:11434",
         embedding_model: str = "nomic-embed-text",
         chat_model: str = "qwen3:4b",
-        timeout_seconds: int = 180,
+        timeout_seconds: int = 600,
         context_tokens: int = 4096,
+        max_output_tokens: int = 768,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.embedding_model = embedding_model
         self.chat_model = chat_model
         self.timeout_seconds = timeout_seconds
         self.context_tokens = context_tokens
+        self.max_output_tokens = max_output_tokens
 
     def _post(self, endpoint: str, payload: dict[str, Any]) -> dict[str, Any]:
         request = urllib.request.Request(
@@ -74,10 +87,12 @@ class OllamaClient:
                 "model": self.chat_model,
                 "messages": messages,
                 "stream": False,
-                "format": "json",
+                "format": _analysis_schema(),
+                "think": False,
                 "keep_alive": 0,
                 "options": {
                     "num_ctx": self.context_tokens,
+                    "num_predict": self.max_output_tokens,
                     "temperature": 0.1,
                 },
             },

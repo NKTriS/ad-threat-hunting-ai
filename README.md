@@ -59,6 +59,44 @@ python -m ai.cli analyze
 Báo cáo được ghi vào `data/reports.json` với evidence, classification, risk,
 khuyến nghị tiếng Việt và nguồn RAG.
 
+Mặc định mỗi request có timeout 600 giây và giới hạn output 768 token để lần nạp
+model đầu trên GPU 4 GB có đủ thời gian nhưng báo cáo không sinh quá dài.
+
+### 4. So sánh RAG với baseline không RAG
+
+Chạy lại đúng bộ Incident nhưng không cung cấp knowledge context:
+
+```powershell
+python -m ai.cli analyze --no-rag
+```
+
+Sau đó chấm hai kết quả trên cùng ground truth mẫu:
+
+```powershell
+python -m ai.cli evaluate `
+  --baseline-reports data/reports_no_rag.json
+```
+
+Kết quả được ghi vào `data/evaluation.json`. Các metric tự động gồm JSON/schema
+validity, technique/MITRE/classification accuracy, citation validity,
+retrieval Recall@k, hit rate, MRR và cảnh báo Event ID/MITRE ID không có trong
+context. Chất lượng giải thích, evidence groundedness và khuyến nghị vẫn cần
+analyst đánh giá thủ công theo `evaluation/manual_review.template.json`; kết quả
+local có thể lưu tại `data/manual_review.json`.
+
+### 5. Đo tài nguyên local
+
+Sau khi hai model đã được pull, chạy toàn bộ pipeline có đo thời gian và RAM:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/measure_local_pipeline.ps1
+```
+
+Số đo được ghi vào `data/runtime_metrics.json` và không commit lên Git. Peak RAM
+là tổng working set của tiến trình Python/Ollama trong lúc chạy; peak GPU memory
+là mức dùng toàn GPU tại thời điểm đo nếu máy có `nvidia-smi`. Script cũng ghi
+phân bổ total/CPU/VRAM của model do Ollama `/api/ps` báo cáo.
+
 ## Dùng alert thật từ Wazuh
 
 Trên Wazuh Manager, alert mặc định nằm tại:
@@ -82,4 +120,5 @@ và hợp đồng output trước khi cài model.
 ## Tài liệu
 
 - [Kiến trúc RAG](docs/rag_architecture.md)
+- [Checklist dựng AD Lab và Wazuh](docs/wazuh_setup.md)
 - [Đề xuất đồ án](Proposal%20Đồ%20án%20tốt%20nghiệp.md)

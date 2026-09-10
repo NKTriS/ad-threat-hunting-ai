@@ -30,6 +30,10 @@ logs/
 data/rag_index/
 data/incidents.json
 data/reports.json
+data/reports_no_rag.json
+data/evaluation.json
+data/runtime_metrics.json
+data/manual_review.json
 
 # Python and development caches
 __pycache__/
